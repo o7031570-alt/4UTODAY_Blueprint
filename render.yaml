@@ -1,0 +1,45 @@
+# Exported from Render on 2026-01-31T18:02:31Z
+version: "1"
+projects:
+- name: My project
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: 4UTODAY
+      runtime: python
+      repo: https://github.com/o7031570-alt/4UTODAY-Backend
+      plan: free
+      envVars:
+      - key: RENDER_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: Secret_Key
+        sync: false
+      - key: .env
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: telegram_bot_db
+          property: connectionString
+      - key: TELEGRAM_CHANNEL_ID
+        sync: false
+      - fromGroup: .env
+      region: oregon
+      buildCommand: pip install -r requirements.txt
+      startCommand: gunicorn app:app
+      autoDeployTrigger: commit
+      previews:
+        generation: automatic
+    databases:
+    - name: telegram_bot_db
+      databaseName: telegram_bot_db_zhdg
+      user: telegram_bot_db_zhdg_user
+      plan: free
+      region: oregon
+      ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+      postgresMajorVersion: "18"
+      
