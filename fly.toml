@@ -1,0 +1,11 @@
+# fly.toml
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+  [[http_service.ports]]
+    handlers = ["http"]
+    port = 80
+  [[http_service.ports]]
+    handlers = ["tls", "http"]
+    port = 443
